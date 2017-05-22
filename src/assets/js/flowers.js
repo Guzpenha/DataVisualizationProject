@@ -51,7 +51,7 @@ var cValue = function(d) {
   },
   color = d3.scaleOrdinal(d3.schemeCategory10);
 
-var svg = d3.select("body")
+var svg = d3.select("#flower")
   .append("svg")
   .attr('class', 'flowers-chart')
   .attr("width", width + margin.left + margin.right)
@@ -60,7 +60,7 @@ var svg = d3.select("body")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip extra
-var tooltip = d3.select("body").append("div")
+var tooltip = d3.select("#flower").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0.0);
 
@@ -158,7 +158,7 @@ var updateData = function() {
       .attr("y", 30)
       .attr("font-family", "sans-serif")
       .attr("font-size", "22px")
-      .attr("fill", "white")
+      .attr("fill", "000")
       .attr("opacity", 0.1)
       .transition()
       .duration(2000)
@@ -169,7 +169,8 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".stem")
-      .style("stroke", "#88DC76")
+      // .style("stroke", "#88DC76")
+      .style("stroke", "#1E9911")
       .style("stroke-width", "1.5")
       .attr("x1", xMap)
       .attr("x2", xMap)
@@ -204,12 +205,14 @@ var updateData = function() {
     //      .style("stroke", "white")       
     //      .style("fill", "white")
 
+    var petalColor = "B4BA00"
+
     //Draw each feature petal    
     svg.selectAll(".housing")
       .data(data)
       .enter().append("line")
       .attr("class", ".housing")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 0, d.housing);
@@ -224,7 +227,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".income")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 1, d.income);
@@ -238,7 +241,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".jobs")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 2, d.jobs);
@@ -252,7 +255,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".community")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 3, d.community);
@@ -266,7 +269,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".education")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 4, d.education);
@@ -280,7 +283,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".environment")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 5, d.environment);
@@ -294,7 +297,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".civicengagement")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 6, d.civicengagement);
@@ -308,7 +311,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".health")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 7, d.health);
@@ -322,7 +325,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".lifesatisfaction")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 8, d.lifesatisfaction);
@@ -336,7 +339,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".safety")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 9, d.safety);
@@ -350,7 +353,7 @@ var updateData = function() {
       .data(data)
       .enter().append("line")
       .attr("class", ".worklife")
-      .style("stroke", "white")
+      .style("stroke", petalColor)
       .attr("x1", xMap)
       .attr("x2", function(d) {
         return xPetalMap(d, 10, d.worklife);
@@ -371,8 +374,8 @@ var updateData = function() {
       .attr("data-legend", function(d) {
         return d.Account;
       })
-      .style("fill", "#FFFFFF")
-      .style("stroke", "#FFFFFF")
+      .style("fill", "white")
+      .style("stroke", "white")
       .on("mouseover", function(d) {
         tooltip.transition()
           .duration(200)

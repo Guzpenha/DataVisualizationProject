@@ -36,10 +36,11 @@ rect {
   font-family: sans-serif;
 }
 .stop-left {
-  stop-color: #5AA0DC;
+  /*stop-color: #5AA0DC;*/
+  stop-color: #efefef;
 }
 .stop-right {
-  stop-color: #7E8DC2;
+  stop-color: #efefef;
 }
 .filled {
   fill: url(#mainGradient);

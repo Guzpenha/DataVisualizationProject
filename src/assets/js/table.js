@@ -1,7 +1,20 @@
-var rowsPerPage = 3;
 
-// This function expects a list of column names and it will return the string for the HTML table header
+// The number of rows per page (this could be extracted from a dropdown input)
+var rowsPerPage = 15;
+
+
 function createTableHeaderHTML(headers){
+	/* 
+
+	This function creates html for the table header
+
+	Inputs
+	-------
+		headers: a list of column names
+
+	Return
+	-------
+		string for the HTML table header   */
 
 	var line = "<tr>";
 	headers.forEach(function(header){
@@ -11,9 +24,18 @@ function createTableHeaderHTML(headers){
 	return line;
 }
 
-
-// This function expects a map for a single row and it will return the string for the HTML table row
 function createTableLineHTML(row){
+	/* 
+
+	This function creates html for a table row
+
+	Inputs
+	-------
+		row: an object with key and values
+
+	Return
+	-------
+		string for the HTML table row   */
 
 	var line = "<tr>";
 	Object.keys(row).forEach(function(key){
@@ -23,8 +45,19 @@ function createTableLineHTML(row){
 	return line;
 }
 
-// This function expects the input data and the id of the element that the table will be written on
-function writeTable(data,id, index){	
+
+function writeTable(data, id, index){	
+	/* 
+
+	This function assembles the HTML for the dynamic table and writes it inside id
+
+	Inputs
+	-------
+		data: object containing data to be displayed in a table 
+		id: the html tag it for writing the table inside
+		index: the page index of the table (pagination)	  */
+
+	// Finds data indexes regarding the page (index)
 	index = index | 0 ;	
 	var end = rowsPerPage;
 	var begin = index*rowsPerPage;	
@@ -35,19 +68,25 @@ function writeTable(data,id, index){
 	// Current index 
 	data = (data.slice(begin,end));
 
+	// Creates HTML 
 	var table = "<table class= \"table\">";
 	table+= createTableHeaderHTML(Object.keys(data[0]));
 	data.forEach(function(row){				
 		table+= createTableLineHTML(row);
 	});
 	table +="</table>";
+
+	// writes it to id tag
 	$("#"+id).html(table); 
 }
 
 
 
-// Generic object sort modified from http://stackoverflow.com/questions/2466356/javascript-object-list-sorting-by-object-property
+
 var byProperty = function(prop,reverse) {
+	/*	Generic object sort modified from
+	 http://stackoverflow.com/questions/2466356/javascript-object-list-sorting-by-object-property */
+
 	reverse = reverse || true; // reversed by default 
     var reversed = (reverse) ? -1 : 1;
 
@@ -60,18 +99,20 @@ var byProperty = function(prop,reverse) {
     };
 };
 
+
+/*  Loads table from  file "/data/dados-tp1.csv" and set trigers for dynamic functions */
 $( document ).ready(function() {
 	$("#wrapper").toggleClass("toggled");
 	$(".previous").hide();
-	
-	// Loads data from csv and writes generated table to tableWrapper
+		
+	// Loads data from csv and writes generated table to tableWrapper //
 	var globalData = []
 	var filteredData =[]
-
-	d3.csv("/data/cities.csv", function(data) {
-		floatRows = ["land area","population"]
+	d3.csv("/data/dados-tp1.csv", function(data) {
+		floatRows = ["numEmps","raisedAmt"]
 		data.forEach(function(row){
 			floatRows.forEach(function(col){
+				row[col] = row[col] || 0
 				row[col] = parseFloat(row[col]);
 			});
 			globalData.push(row);
@@ -80,7 +121,9 @@ $( document ).ready(function() {
 		globalData = data		
 	});	
 
-	// Sorting functionality
+	//-------------------------//
+	// Sorting functionality   //
+	//-------------------------//
 	$('body').on('click', 'i.glyphicon-triangle-top', function(event) {    		
 		var target = $( event.target );
 		var colName = event.target.id;
@@ -96,7 +139,9 @@ $( document ).ready(function() {
 		$(".next").attr("id",2);
 	});
 
-	// Pagination functionality
+	//-------------------------//
+	// Pagination functionality//
+	//-------------------------//
 	$('.next').click(function(event){
 		var paginationData = globalData;
 		if($('.searchField').val()!==""){
@@ -130,8 +175,9 @@ $( document ).ready(function() {
 			$(".previous").hide();
 		}
 	});
-
-	// Search functionality
+	//-------------------------//
+	// Search functionality	   //
+	//-------------------------//
 	$('.searchField').on('input',function(event){		
 		var target = $( event.target );
 		var searchInput = target.val()
