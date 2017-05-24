@@ -1,49 +1,82 @@
 <!DOCTYPE html>
 <html>
   <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>TP2 - Visualização de dados</title>  
-  <link href="assets/css/flowers.css" rel="stylesheet"> 
-</head>
-<body>
-  <!-- <div>
-    <a href="#" id="order" style="font-size: 16px; color: black;">Sort</a>
-  </div>   --> 
-      <div id="wrapper">
-
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <ul class="sidebar-nav">
-                <li class="sidebar-brand">
-                    <a href="/index.html">
-                        Home
-                    </a>
-                </li>
-                <li>
-                    <a href="table.html">TP1 - Data Table</a>
-                    <a href="flowers.html">TP2 - D3 intro</a>
-                </li>
-            </ul>
-        </div>
-        <!-- /#sidebar-wrapper -->
-
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12" id ="flower">
-                    
-                    </div>
-                </div>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>TP2 - Visualização de dados</title>
+    
+    <title>DataVisProject</title>
+    <!-- jQuery -->
+    <script src="vendors/js/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="vendors/css/bootstrap.min.css" rel="stylesheet">
+    <!-- SidebarCSS -->
+    <link href="vendors/css/simple-sidebar.css" rel="stylesheet">
+    
+    <!-- Font-awesome -->
+    <link href="vendors/css/font-awesome.min.css" rel="stylesheet">
+    <link href="assets/css/flowers.css" rel="stylesheet">
+    <!-- Bootstrap Core JavaScript -->
+    <script src="vendors/js/bootstrap.min.js"></script>
+    
+    <!-- D3 core JavaScript -->
+    <script src="vendors/js/d3.min.js"></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+          <li class="sidebar-brand">
+            <a href="/index.html">
+              Home
+            </a>
+          </li>
+          <li>
+            <a href="table.html">TP1 - Data Table</a>
+            <a href="flowers.html">TP2 - D3 intro</a>
+          </li>
+        </ul>
+      </div>
+      <!-- /#sidebar-wrapper -->
+      <!-- Page Content -->
+      <div id="page-content-wrapper">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-12" id="flowers">
             </div>
-        </div>                    
+          </div>
+          <div class="row">
+            <div class="col-md-12" id="panel" style="margin-top: 600px;margin-left: -20px;">
+              <a id="lexicoSort" href="#" class='btn btn-info'>Ordernar Alfabeticamente</a>
+              <a id="avgSort" href="#" class='btn btn-success'>Ordernar pela Média</a>
+              <div class="btn-group dropup">
+                <a class="btn dropdown-toggle btn-primary" data-toggle="dropdown" href="#">
+                  Ordenar por Métrica
+                  <span class="caret"></span>
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a id='housingSort' href="#">Housing</a></li>
+                  <li><a id='incomeSort' href="#">Income</a></li>
+                  <li><a id='jobsSort' href="#">Jobs</a></li>
+                  <li><a id='communitySort' href="#">Community</a></li>
+                  <li><a id='educationSort' href="#">Education</a></li>
+                  <li><a id='environmentSort' href="#">Environment</a></li>
+                  <li><a id='civicSort' href="#">Civic Engagement</a></li>
+                  <li><a id='healthSort' href="#">Health</a></li>
+                  <li><a id='lifeSort' href="#">Life Satisfaction</a></li>
+                  <li><a id='safetySort' href="#">Safety</a></li>
+                  <li><a id='workSort' href="#">Work-life Balance</a></li>                  
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
         <!-- /#page-content-wrapper -->
-
-    </div>
-    <!-- /#wrapper -->
-
-  <script src="vendors/js/d3.min.js"></script> 
-  <script src="assets/js/flowers.js"></script>
-</body>
-</html>
+      </div>
+      <script src="assets/js/dataMetrics.js"></script>
+      <script src="assets/js/sort.js"></script>
+      <script src="assets/js/flowers.js"></script>
+      <script src="assets/js/events.js"></script>
+    </body>
+  </html>

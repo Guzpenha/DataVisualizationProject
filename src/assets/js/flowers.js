@@ -1,32 +1,21 @@
 var currentData;
-
-var numberOfTicks = 20;
+var dataScale = 10; // Scale to show data on boxes
+var radius = 4; // Circle radius for flower button
+var petalColor = "#B4BA00"
+var strokeWidth = 3;
+var theta = Math.PI * 2 / 11; // Rate for petals angles
+var padding = 15;
+var dotFill = "white"; // Flowers Buttons colors
+var dotStroke = "white";
 
 var margin = {
-    top: 0,
+    top: 20,
     right: 20,
     bottom: 0,
     left: 20
   },
-  width = innerWidth;
+  width = innerWidth - 80;
 height = 600 - margin.top - margin.bottom;
-
-var radius = 4; //circle radius for flower button
-
-var countryAverage = function(d) {
-  var sum = d.housing 
-  + d.income 
-  + d.jobs 
-  + d.community 
-  + d.education 
-  + d.environment 
-  + d.civicengagement
-  + d.health
-  + d.lifesatisfaction
-  + d.safety
-  + d.worklife;
-  return sum / 11;
-};
 
 var xValue = function(d) {
   return d.country;
@@ -45,50 +34,30 @@ var yMapTranslateRadius = function(d) {
   return yMap(d) + radius;
 };
 
-// setup fill color
-var cValue = function(d) {
-    return d;
-  },
-  color = d3.scaleOrdinal(d3.schemeCategory10);
-
-var svg = d3.select("#flower")
+var svg = d3.select("#flowers")
   .append("svg")
-  .attr('class', 'flowers-chart')
+  .attr("id", "chart-svg")
+  .attr("class", 'flowers-chart')
   .attr("width", width + margin.left + margin.right)
   .attr("height", height + margin.top + margin.bottom)
   .append("g")
   .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
 // add the tooltip extra
-var tooltip = d3.select("#flower").append("div")
+var tooltip = d3.select("#flowers").append("div")
   .attr("class", "tooltip")
   .style("opacity", 0.0);
 
-
 var svgDefs = svg.append('defs');
-var padding = 15;
 
-var mainGradient = svgDefs.append('linearGradient')
-  .attr('id', 'mainGradient');
+// TOOO: Change to insert and update pattern
+var updateData = function(filter) { 
+  var t = d3.transition()
+            .duration(500)
+            .ease(d3.easeLinear);
 
-mainGradient.append('stop')
-  .attr('class', 'stop-left')
-  .attr('offset', '0');
-
-mainGradient.append('stop')
-  .attr('class', 'stop-right')
-  .attr('offset', '1');
-
-svg.append('rect')
-  .classed('filled', true)
-  .attr('x', padding)
-  .attr('y', padding)
-  .attr("transform", "translate(" + (-margin.left - 20) + "," + (-margin.top - 20) + ")");
-
-var dataScale = 10;
-
-// TOOO: Change to insert and update pattern ( V3 )
-var updateData = function() {
+  // Clear SVG
+  svg.selectAll("*").remove();
   // Load data      
   d3.csv("./data/data.csv", function(error, data) {
     // change string (from CSV) into number format
@@ -106,23 +75,30 @@ var updateData = function() {
       d.safety = +d.safety * dataScale;
     });
 
-    var theta = Math.PI * 2 / 11;
+    // sortDataByMetric(data, 'education');
 
-    // xScale.domain([d3.min(data, xAxis)-1, d3.max(data, xValue)+1]);
+    if(filter == 'lexico')    
+      sortDataByName(data);   
+
+    else if(filter == 'avg')
+      sortDataByAvg(data);
+
+    else
+      sortDataByMetric(data, filter);   
+    
     yScale.domain([d3.min(data, yValue) - 1, d3.max(data, yValue) + 1]);
 
     var x = d3.scalePoint()
       .domain(data.map(function(a) {
         return a.country;
       }))
-      .range([0, width]);
-      // .rangeRoundBands([0, width], 0.05);
+      .range([0, width]);      
 
     var xAxis = d3.axisBottom()
                 .scale(x);      
 
     var factor = (width / data.length);
-    var petalFactor = 2;
+    var petalFactor = 3;
 
     var xMap = function(d) {
       return data.indexOf(d) * factor
@@ -134,13 +110,6 @@ var updateData = function() {
     var yPetalMap = function(d, attrNumber, attribute) {
       return yMap(d) - attribute * petalFactor * Math.sin(theta * attrNumber);
     };
-
-
-    // Optional
-    // var bezierLine = d3.svg.line()
-    //     .x(function(d) { return d[0]; })
-    //     .y(function(d) { return d[1]; })
-    //     .interpolate("basis");
 
     // y-axis
     svg.append("g")
@@ -168,14 +137,15 @@ var updateData = function() {
     svg.selectAll(".stem")
       .data(data)
       .enter().append("line")
-      .attr("class", ".stem")
-      // .style("stroke", "#88DC76")
+      .transition(t)
+      .attr("class", ".stem")      
       .style("stroke", "#1E9911")
       .style("stroke-width", "1.5")
       .attr("x1", xMap)
       .attr("x2", xMap)
       .attr("y1", yMapTranslateRadius)
-      .attr("y2", height);
+      .attr("y2", height)      
+      .transition(t);
 
     svg.selectAll(".stemCountry")
       .data(data)
@@ -183,34 +153,19 @@ var updateData = function() {
       .text(function(d) {
         return d.country;
       })
+      .transition(t)
       .attr("class", ".stemCountry")
       .attr("x", xMap)
       .attr("y", yMap)
       .attr("font-family", "sans-serif")
       .attr("font-size", "14px")
-      .attr("transform", "translate(0,80)");
-
-
-
-    // Another option: Bezier Curve for petals
-    // svg.selectAll(".housing")
-    //   .data(data)
-    //   .enter().append("path")
-    //      .attr("d", function(d) { 
-    //                   var finalX = xPetalMap(d, 0, d.housing);
-    //                   var finalY = yPetalMap(d, 0, d.housing);                    
-    //                   return bezierLine([[xMap(d), yMap(d)], [finalX, finalY], [xMap(d) + 15, yMap(d) - 15]]);
-    //                 })
-    //      .attr("class", ".housing")
-    //      .style("stroke", "white")       
-    //      .style("fill", "white")
-
-    var petalColor = "B4BA00"
+      .attr("transform", "translate(0,80)")
 
     //Draw each feature petal    
     svg.selectAll(".housing")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".housing")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -221,11 +176,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 0, d.housing);
       })
-
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".income")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".income")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -236,10 +192,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 1, d.income);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".jobs")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".jobs")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -250,10 +208,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 2, d.jobs);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".community")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".community")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -264,10 +224,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 3, d.community);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".education")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".education")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -278,10 +240,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 4, d.education);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".environment")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".environment")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -292,10 +256,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 5, d.environment);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".civicengagement")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".civicengagement")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -306,10 +272,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 6, d.civicengagement);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".health")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".health")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -320,10 +288,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 7, d.health);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".lifesatisfaction")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".lifesatisfaction")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -334,10 +304,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 8, d.lifesatisfaction);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".safety")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".safety")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -348,10 +320,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 9, d.safety);
       })
+      .attr("stroke-width", strokeWidth)
 
     svg.selectAll(".worklife")
       .data(data)
       .enter().append("line")
+      .transition(t)
       .attr("class", ".worklife")
       .style("stroke", petalColor)
       .attr("x1", xMap)
@@ -362,11 +336,12 @@ var updateData = function() {
       .attr("y2", function(d) {
         return yPetalMap(d, 10, d.worklife);
       })
+      .attr("stroke-width", strokeWidth)
 
     // draw dots above the petals 
     svg.selectAll(".dot")
       .data(data)
-      .enter().append("circle")
+      .enter().append("circle")            
       .attr("class", "dot")
       .attr("r", radius)
       .attr("cx", xMap)
@@ -374,8 +349,8 @@ var updateData = function() {
       .attr("data-legend", function(d) {
         return d.Account;
       })
-      .style("fill", "white")
-      .style("stroke", "white")
+      .style("fill", dotFill)
+      .style("stroke", dotStroke)
       .on("mouseover", function(d) {
         tooltip.transition()
           .duration(200)
@@ -388,7 +363,20 @@ var updateData = function() {
         tooltip.transition()
           .duration(500)
           .style("opacity", 0);
-      });
+      });  
   });
 }
-updateData();
+
+updateData('lexico');
+
+var lexicoSort = function() {
+  updateData('lexico');
+}
+
+var avgSort = function() {
+  updateData('avg');
+}
+
+var metricSort = function(param) {
+  updateData(param);
+}

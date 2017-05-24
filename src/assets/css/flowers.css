@@ -2,13 +2,13 @@ body {
   font: 12px sans-serif;
 }
 
-/*html, body { margin:0; padding:0; overflow:hidden }*/
 svg {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  width: 100%
+  width: 100%;
+  background-color: #626262;
 }
 rect {
   height: 110%;
@@ -25,8 +25,7 @@ rect {
 .tooltip {
   position: absolute;
   width: 200px;
-  height: 230px;  
-  pointer-events: none;
+  height: 290px !important;    
   background-color: white;
   box-shadow: 0px 3px 3px 0px;
 }
