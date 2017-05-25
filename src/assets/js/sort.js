@@ -12,6 +12,6 @@ var sortDataByAvg = function(data) {
 
 var sortDataByName = function(data) {  
   data.sort(function(a,b) {
-    return a.country.localeCompare(b.country); 
+    return getEntry(countryDictionary, a.country).localeCompare(getEntry(countryDictionary, b.country)); 
   });  
 }
