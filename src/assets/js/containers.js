@@ -6,9 +6,9 @@ var svg2 = d3.select("#question2")
   .append("svg")
   .attr("id", "vis2");
 
-var svg3 = d3.select("#question3")
-  .append("svg")
-  .attr("id", "vis3");  
+// var svg3 = d3.select("#question3")
+//   .append("svg")
+//   .attr("id", "vis3");
 
 d3.selectAll("svg")
   .append("g");
@@ -29,10 +29,13 @@ svg2.append("text")
   .attr("font-size", "22px")
   .attr("fill", "black");
 
-svg3.append("text")
-  .text("SVG 3")
-  .attr("x", 300)
-  .attr("y", 30)
-  .attr("font-family", "sans-serif")
-  .attr("font-size", "22px")
-  .attr("fill", "black");
+// svg3.append("text")  
+  // .attr("x", 300)
+  // .attr("y", 30)
+  // .attr("font-family", "sans-serif")
+  // .attr("font-size", "22px")
+  // .attr("fill", "black");
+
+$( document ).ready(function() {
+  plot_visualization_1()
+});
