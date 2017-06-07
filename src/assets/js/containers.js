@@ -1,10 +1,13 @@
 var svg1 = d3.select("#question1")
   .append("svg")
-  .attr("id", "vis1");
+  .attr("id", "vis1")
+  .attr("class", "std");
+
 
 var svg2 = d3.select("#question2")
   .append("svg")
-  .attr("id", "vis2");
+  .attr("id", "vis2")
+  .attr("class", "std");
 
 // var svg3 = d3.select("#question3")
 //   .append("svg")
