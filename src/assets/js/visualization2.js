@@ -106,7 +106,7 @@ function plot_single(data, rowNode, featureName, methodName, size, margin) {
 }
 
 
-function plot_visualization_2() {
+function plotVisualization2() {
     var margin = { x: 30, y: 20 },
         size   = { x: 97, y: 97 };
 
