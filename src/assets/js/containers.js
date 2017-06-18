@@ -4,10 +4,10 @@ var svg1 = d3.select("#question1")
   .attr("class", "std");
 
 
-var svg2 = d3.select("#question2")
-  .append("svg")
-  .attr("id", "vis2")
-  .attr("class", "std");
+//var svg2 = d3.select("#question2")
+//  .append("svg")
+//  .attr("id", "vis2")
+//  .attr("class", "std");
 
 // var svg3 = d3.select("#question3")
 //   .append("svg")
@@ -24,13 +24,13 @@ svg1.append("text")
   .attr("font-size", "22px")
   .attr("fill", "black");
 
-svg2.append("text")
-  .text("SVG 2")
-  .attr("x", 300)
-  .attr("y", 30)
-  .attr("font-family", "sans-serif")
-  .attr("font-size", "22px")
-  .attr("fill", "black");
+//svg2.append("text")
+//  .text("SVG 2")
+//  .attr("x", 300)
+//  .attr("y", 30)
+//  .attr("font-family", "sans-serif")
+//  .attr("font-size", "22px")
+//  .attr("fill", "black");
 
 // svg3.append("text")  
   // .attr("x", 300)
@@ -40,5 +40,6 @@ svg2.append("text")
   // .attr("fill", "black");
 
 $( document ).ready(function() {
-  plot_visualization_1()
+  plot_visualization_1();
+  plot_visualization_2();
 });
