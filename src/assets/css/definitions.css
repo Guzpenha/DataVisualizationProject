@@ -1,11 +1,7 @@
-svg.std{
-	width: 100%;
-	height: 800px;
-}
-
 div.multiplePlots {
 	float:left;
 }
+
 .ticks {
   font: 10px sans-serif;
 }
@@ -39,4 +35,50 @@ div.multiplePlots {
   stroke: #000;
   stroke-opacity: 0.5;
   stroke-width: 1.25px;
+}
+
+svg {
+  font: 10px sans-serif;  
+}
+
+.background path {
+  fill: none;
+  stroke: #ddd;
+  shape-rendering: crispEdges;
+}
+
+.foreground path {
+  fill: none;
+  stroke: #E96860;
+}
+
+.brush .extent {
+  fill-opacity: .3;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #5C2926;
+  shape-rendering: crispEdges;
+}
+
+.axis text {
+  text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff, -1px 0 0 #fff;
+  cursor: move;
+}
+
+a { 
+  cursor: pointer;
+}
+
+.bigTitle{
+  font-weight: 700;
+  font-size: 12px;
+}
+
+i {
+  color: black;
 }
