@@ -67,18 +67,28 @@ function plot_single(data, rowNode, featureName, methodName, size, margin) {
     var node = rowNode.append("td")
       .style("padding", "0px").append("svg");
 
+    var xExtent = d3.extent(data, function(d) { return d[featureName]; });
+
+    node.append("g")
+      .append("line")
+      .attr("stroke", "blue")
+      .attr("stroke-width", "3px")
+      .attr("x1", x(xExtent[0]))
+      .attr("y1", y(trendData[0] + trendData[1] * xExtent[0]))
+      .attr("x2", x(xExtent[1]))
+      .attr("y2", y(trendData[0] + trendData[1] * xExtent[1]));
+
     node.style("width", size.x + margin.x)
       .style("height", size.y +  margin.y)
       .style("display", "inline")
       .selectAll("dot")
       .data(data)
       .enter().append("circle")
+      .attr("class", function(d) { return "user" + d["userId"]; })
       .attr("r", 3)
       .style("fill-opacity", .3)
       .attr("cx", function(d) { return x(parseFloat(d[featureName])); })
       .attr("cy", function(d) { return y(parseFloat(d["avg_error"])); });
-
-    var xExtent = d3.extent(data, function(d) { return d[featureName]; });
 
     node.append("g")
       .attr("transform", "translate(0," + size.y + ")")
@@ -92,17 +102,8 @@ function plot_single(data, rowNode, featureName, methodName, size, margin) {
       .style("font-size", "9px")
       .call(d3.axisLeft(y).tickValues(d3.range(0, 6)));
 
-    node.append("g")
-      .append("line")
-      .attr("stroke", "blue")
-      .attr("stroke-width", "3px")
-      .attr("x1", x(xExtent[0]))
-      .attr("y1", y(trendData[0] + trendData[1] * xExtent[0]))
-      .attr("x2", x(xExtent[1]))
-      .attr("y2", y(trendData[0] + trendData[1] * xExtent[1]));
-
-      // We return the Pearson's correlation value
-      return trendData[2];
+    // We return the Pearson's correlation value
+    return trendData[2];
 }
 
 
@@ -212,5 +213,26 @@ function plotVisualization2() {
               .text(features[i]);
         }
 
+        $("#question2 svg circle").mouseenter(function(e) {
+            var userId = $(e.target).prop("className").baseVal;
+
+            $("#question2 ." + userId)
+              .css("fill-opacity", 1)
+              .attr("fill", "red")
+              .attr("stroke", "black")
+              .attr("r", 5);
+
+        });
+
+        $("#question2 svg circle").mouseleave(function(e) {
+            var userId = $(e.target).prop("className").baseVal;
+
+            $("#question2 ." + userId)
+              .css("fill-opacity", .3)
+              .attr("fill", "black")
+              .attr("stroke", "none")
+              .attr("r", 3);
+
+        });
     });
 }
