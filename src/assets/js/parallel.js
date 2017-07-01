@@ -1,3 +1,5 @@
+usersAVGErrors = [];
+
 var margin = {top: 70, right: 10, bottom: 10, left: 10},
     width = 1300 - margin.left - margin.right,
     height = 570 - margin.top - margin.bottom;
@@ -18,19 +20,17 @@ var svg = d3.select("#question1").append("svg")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var plotVisualization1 = function () {
-    console.log("Plotting Visualization 1.");
-
-    d3.csv("../data/users_avg_erros_sample_50.csv", function(error, models) {
-      // Each model is an dimension of the visualization    
+var drawParallel = function (models) {    
+      svg.selectAll("g").remove();
+      // Each model is an dimension of the visualization                             
       x.domain(dimensions = d3.keys(models[0]).filter(function(d) {    
-        if(d == "userId") return false;
-        return y[d] = d3.scaleLinear()
-                        .domain([0,5])
-                        .range([height, 0]);
-      }));
+      if(d == "userId") return false;
+      return y[d] = d3.scaleLinear()
+                      .domain([0,5])
+                      .range([height, 0]);
+      }));             
 
-      extents = dimensions.map(function(p) { return [0,0]; });
+      extents = usersAVGErrors.map(function(p) { return [0,0]; });
       
       // When the range filter be applied, we will show the 'unselected' users in gray
       background = svg.append("g")
@@ -65,9 +65,9 @@ var plotVisualization1 = function () {
               dragging[d] = Math.min(width, Math.max(0, d3.event.x));
               foreground.attr("d", path);          
               // When the current model being dragger pass another model, change the positons (swap)
-              dimensions.sort(function(a, b) { return position(a) - position(b); });
+              dimensions.sort(function(a, b) { return positionFunc(a) - positionFunc(b); });
               x.domain(dimensions);
-              g.attr("transform", function(d) { return "translate(" + position(d) + ")"; })
+              g.attr("transform", function(d) { return "translate(" + positionFunc(d) + ")"; })
             })
             .on("end", function(d) {
                 delete dragging[d];
@@ -93,11 +93,23 @@ var plotVisualization1 = function () {
         .attr("class", "bigTitle")    
         .attr("y", -9) 
         .text(function(d) { return d; });
+}
+
+var plotVisualization1 = function () {
+    console.log("Plotting Visualization 1.");
+
+    //Load full data only on the first time
+    if(usersAVGErrors.length == 0)
+    d3.csv("../data/user_avg_errors_pivoted.csv", function(error, models) {
+        usersAVGErrors = models; 
+        plotVisualization1();
     });
+    else    
+       pagination(usersAVGErrors);           
 }
 
 // Movement function to order models
-function position(d) {
+function positionFunc(d) {
   var v = dragging[d];
   return v == null ? x(d) : v;
 }
@@ -109,5 +121,8 @@ function transition(g) {
 
 // Create the line between models(dimensions)
 function path(d) {
-  return line(dimensions.map(function(p) { return [position(p), y[p](d[p])]; }));
+  return line(dimensions.map(function(p) { return [positionFunc(p), y[p](d[p])]; }));
 }
+
+$("#previousPage").on('click', decreasePage);
+$("#nextPage").on('click', increasePage);

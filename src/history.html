@@ -52,6 +52,17 @@
                     <div class="row col-lg-12">
                         <h4>Pergunta 1 - Os  Sistemas  de  Recomendação  cometem  erros  parecidos?</h4>
                         <div id="question1"></div>
+                        <div class="col-md-10" id="parallelParams">
+                            <h4>Painel de Interação</h4>
+                            <div class="col-md-4">
+                            <h5>Grupos de Usuário</h5>   
+                                Tamanho do Grupo
+                                <input class="form-control" type="number" id="usersByPage" value="50"></input>
+                                <a style="padding: 0px;" id="previousPage" class="floating btn" href="#">Grupo Anterior</a>
+                                <!-- <span id="pageIndex" class="col-md-8"></span> -->
+                                <a style="padding: 0px;" id="nextPage" class="floating btn" href="#">Próximo Grupo</a>
+                            </div>
+                        </div>
                     </div>
                     <div class="row col-lg-12">
                         <h4>Pergunta 2 - Conseguimos identificar características do usuário que fazem com que algoritmos de recomendação tenham performance ruim?</h4>
@@ -71,12 +82,14 @@
         </div>
         <script src="assets/js/visualization2.js"></script>  
         <script src="assets/js/visualization3.js"></script>        
-        <script src="assets/js/parallel.js"></script>
+        <script src="assets/js/shared.js"></script>
+        <script src="assets/js/pager.js"></script>
+        <script src="assets/js/parallel.js"></script>        
         <script>
             $(document).ready(function() {                
                 plotVisualization1();
                 plotVisualization2();
-                plotVisualization3();
+                //plotVisualization3();
 
                 $("#menu-toggle").click(function(e) {
                     e.preventDefault();
