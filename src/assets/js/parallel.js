@@ -80,6 +80,16 @@ var drawParallel = function (models) {
                          .attr("visibility", null);
             }));
 
+      g.append("g")
+       .attr("class", "brush")
+       .each(function(d) {
+          d3.select(this).call(y[d].brush = d3.brushY().extent([[-8, 0], 
+                    [8,height]]).on("brush start",
+                    brushStart).on("brush", brushParallelChart));
+       })
+       .selectAll("rect")
+       .attr("x", -8)
+       .attr("width", 16);
       // Add y axis and captions
       g.append("g")
         .attr("class", "axis")
@@ -122,6 +132,39 @@ function transition(g) {
 // Create the line between models(dimensions)
 function path(d) {
   return line(dimensions.map(function(p) { return [positionFunc(p), y[p](d[p])]; }));
+}
+
+// Create the brush to select range of data filter
+function brushParallelChart() {    
+    for(var i=0;i<dimensions.length;++i){
+        if(d3.event.target==y[dimensions[i]].brush) {
+            extents[i]=d3.event.selection.map(y[dimensions[i]].invert,y[dimensions[i]]);
+        }
+    }
+
+    foreground.style("display", function(d) {
+      return dimensions.every(function(p, i) {
+          if(extents[i][0]==0 && extents[i][0]==0) {
+              return true;
+          }
+        return extents[i][1] <= d[p] && d[p] <= extents[i][0];
+      }) ? null : "none";
+    });
+}
+
+function brushStart() {
+  d3.event.sourceEvent.stopPropagation();
+}
+
+// Handles a brush event, toggling the display of foreground lines.
+function brush() {
+  var actives = dimensions.filter(function(p) { return !y[p].brush.empty(); }),
+      extents = actives.map(function(p) { return y[p].brush.extent(); });
+  foreground.style("display", function(d) {
+    return actives.every(function(p, i) {
+      return extents[i][0] <= d[p] && d[p] <= extents[i][1];
+    }) ? null : "none";
+  });
 }
 
 $("#previousPage").on('click', decreasePage);
