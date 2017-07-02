@@ -2,12 +2,12 @@ function drawScatterPlots(perp){
   $("#question3").empty();
   // set the dimensions and margins of the graph
   var margin = {top: 50, right: 20, bottom: 30, left: 60},
-      width = 300 - margin.left - margin.right,
-      height = 300 - margin.top - margin.bottom;
+      width3 = 300 - margin.left - margin.right,
+      height3 = 300 - margin.top - margin.bottom;
 
   // set the ranges
-  var x = d3.scaleLinear().range([0, width]);
-  var y = d3.scaleLinear().range([height, 0]);
+  var x = d3.scaleLinear().range([0, width3]);
+  var y = d3.scaleLinear().range([height3, 0]);
 
   var color = d3.scaleOrdinal()
     .domain(["0", "1"])
@@ -18,8 +18,8 @@ function drawScatterPlots(perp){
   for (i = 0 ;i <17 ;i++){
     $("#question3").append("<div id=\"vis3plot"+i+"\" class =\"multiplePlots\"></div>")
     var svg = d3.select("#vis3plot"+i).append("svg").attr("id", "vis3svg"+i)
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
+        .attr("width", width3 + margin.left + margin.right)
+        .attr("height", height3 + margin.top + margin.bottom)
         .append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
     svgs.push(svg)
@@ -29,7 +29,7 @@ function drawScatterPlots(perp){
   
   // Get the data
   d3.csv("../data/user_2d.csv").on("progress", function(evt) {
-        console.log("Amount loaded: " + evt.loaded)
+        // console.log("Amount loaded: " + evt.loaded)
     })
     .get(function(error,dataAll) {        
     
@@ -41,7 +41,7 @@ function drawScatterPlots(perp){
       data = dataAll.filter(function(r){return r.RS ===rec})      
 
       svgs[i].append("text")
-            .attr("x", (width / 2))             
+            .attr("x", (width3 / 2))             
             .attr("y", 0 - (margin.top / 2))
             .attr("text-anchor", "middle")  
             .style("font-size", "16px") 
@@ -64,7 +64,7 @@ function drawScatterPlots(perp){
 
       // Add the X Axis
       svgs[i].append("g")
-          .attr("transform", "translate(0," + height + ")")
+          .attr("transform", "translate(0," + height3 + ")")
           .call(d3.axisBottom(x));
 
       // Add the Y Axis
@@ -80,8 +80,8 @@ var plotVisualization3 = function() {
   // Interation functionality 
   var svgSlider = d3.select("#sliderForPerplexity")
       margin = {right: 50, left: 50},
-      width = +svgSlider.attr("width") - margin.left - margin.right,
-      height = +svgSlider.attr("height");
+      width4 = +svgSlider.attr("width") - margin.left - margin.right,
+      height4 = +svgSlider.attr("height");
 
   svgSlider.append("text")
     .text("t-sne Perplexity:")
@@ -92,12 +92,12 @@ var plotVisualization3 = function() {
     .attr("fill", "black");
   var x = d3.scaleLinear()
       .domain([5, 50])
-      .range([0, width])
+      .range([0, width4])
       .clamp(true);
 
   var slider = svgSlider.append("g")
       .attr("class", "slider")
-      .attr("transform", "translate(" + margin.left + "," + height / 2 + ")");
+      .attr("transform", "translate(" + margin.left + "," + height4 / 2 + ")");
 
   slider.append("line")
       .attr("class", "track")
