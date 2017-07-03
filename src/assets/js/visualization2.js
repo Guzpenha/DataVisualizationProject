@@ -71,7 +71,7 @@ function plot_single(data, rowNode, featureName, methodName, size, margin) {
 
     node.append("g")
       .append("line")
-      .attr("stroke", "blue")
+      .attr("stroke", "#3588A9")
       .attr("stroke-width", "3px")
       .attr("x1", x(xExtent[0]))
       .attr("y1", y(trendData[0] + trendData[1] * xExtent[0]))
@@ -187,7 +187,7 @@ function plotVisualization2() {
               .data(corr)
               .enter().append("line")
               .attr("stroke-width", "2px")
-              .attr("stroke", "black")
+              .attr("stroke", "#3588A9")
               .attr("x1", function(d) { return d["index"] * cellWidth - cellWidth / 2; })
               .attr("y1", function(d) { return d["prevCorr"] == 0 ? sparkHeight / 2 : y(d["prevCorr"]); })
               .attr("x2", function(d) { return (d["index"] * cellWidth) + (cellWidth / 2); })
@@ -197,7 +197,7 @@ function plotVisualization2() {
               .data(corr)
               .enter().append("line")
               .attr("stroke-width", "2px")
-              .attr("stroke", "black")
+              .attr("stroke", "#3588A9")
               .attr("x1", function(d) { return (d["index"] * cellWidth) + (cellWidth / 2); })
               .attr("y1", function(d) { return y(d["corr"]); })
               .attr("x2", function(d) { return (d["index"] * cellWidth) + 3 * cellWidth / 2; })
@@ -218,8 +218,8 @@ function plotVisualization2() {
 
             $("#question2 ." + userId)
               .css("fill-opacity", 1)
-              .attr("fill", "red")
-              .attr("stroke", "black")
+              .attr("fill", "#BA0023")
+              .attr("stroke", "#BA0023")
               .attr("r", 5);
 
         });
