@@ -28,7 +28,7 @@ function drawScatterPlots(perp){
   recommenders = ["BiasedMatrixFactorization","BiPolarSlopeOne","CoClustering","Constant","Constant5","FactorWiseMatrixFactorization","GlobalAverage","ItemAverage","LatentFeatureLogLinearModel","MatrixFactorization","Random","SigmoidSVDPlusPlus","SlopeOne","TimeAwareBaseline","TimeAwareBaselineWithFrequencies","UserAverage","UserItemBaseline"]
   
   // Get the data
-  d3.csv("./data/user_2d.csv").on("progress", function(evt) {
+  d3.csv("./DataVisualizationProject/data/user_2d.csv").on("progress", function(evt) {
         // console.log("Amount loaded: " + evt.loaded)
     })
     .get(function(error,dataAll) {        

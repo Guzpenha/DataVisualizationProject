@@ -119,7 +119,7 @@ function plotVisualization2() {
       .append("table");
 
     // Read user data
-    d3.csv("../data/user_features_with_errors_sample.csv", function(error, data) {
+    d3.csv("./DataVisualizationProject/data/user_features_with_errors_sample.csv", function(error, data) {
         if (error) {
             console.error(error);
             throw error;

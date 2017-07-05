@@ -110,7 +110,7 @@ var plotVisualization1 = function () {
 
     //Load full data only on the first time
     if(usersAVGErrors.length == 0)
-    d3.csv("../data/user_avg_errors_pivoted.csv", function(error, models) {
+    d3.csv("./DataVisualizationProject/data/user_avg_errors_pivoted.csv", function(error, models) {
         usersAVGErrors = models; 
         plotVisualization1();
     });
